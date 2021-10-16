@@ -31,12 +31,12 @@ data "aws_ami" "ubuntu" {
   owners = ["099720109477"] # Canonical
 }
 
-resource "aws_security_group" "xyz-sg" {
-  name = "XYZ-SG"
-  description = "XYZ security group"
+resource "aws_security_group" "bsf-sg" {
+  name = "BSF-SG"
+  description = "BSF security group"
 
   tags = {
-    Name = "XYZ-SG"
+    Name = "BSF-SG"
     Environment = terraform.workspace
   }
 }
@@ -68,24 +68,24 @@ resource "aws_security_group_rule" "create-sgr-outbound" {
   type              = "egress"
 }
 
-resource "aws_instance" "web" {
-  count         = 2
+resource "aws_instance" "jenkins" {
+  count         = 1
   ami           = data.aws_ami.ubuntu.id
   instance_type = "t2.micro"
   key_name      = aws_key_pair.deployer.key_name
-  security_groups = ["XYZ-SG"]
+  security_groups = ["BSF-SG"]
   tags = {
-    Name = "xyz-${count.index}"
+    Name = "bsf-${count.index}"
   }
 }
 
-resource "null_resource" "control-node" {
+resource "null_resource" "deploy-server" {
     
     connection {
       type        = "ssh"
       user        = "ubuntu"
       private_key = tls_private_key.private-key.private_key_pem
-      host        = aws_instance.web.*.public_dns[0]
+      host        = aws_instance.jenkins.*.public_dns[0]
     }
 
     provisioner "remote-exec" {
@@ -116,7 +116,7 @@ resource "null_resource" "control-node" {
     }
 
     provisioner "local-exec" {
-      command = "echo '${tls_private_key.private-key.private_key_pem}' > ~/.ssh/xyz.pem && chmod 600 ~/.ssh/xyz.pem "
+      command = "echo '${tls_private_key.private-key.private_key_pem}' > ~/.ssh/xyz.pem && chmod 600 ~/.ssh/bsf.pem "
     }
 }
 
