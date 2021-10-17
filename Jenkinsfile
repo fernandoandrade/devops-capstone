@@ -1,9 +1,12 @@
 pipeline {
     agent any
+    tools {
+        maven 'mvn'
+    }
     stages {
         stage('Compile and Run UniTest') {
             steps {
-                sh 'mvn clean compile test "-Dtest=!AutoCalcAppTest*"'
+                sh 'mvn clean compile'
                 echo 'Code Compiled and Tested.'                
             }
         }
