@@ -1,0 +1,22 @@
+pipeline {
+    agent any
+    stages {
+        stage('Set AWS Credentials') {
+            steps {
+                sh 'cd ./app-server-terraform'
+                sh 'export access_key='
+                sh 'export secret_key='
+                sh 'export session_token='
+                echo 'AWS credentials set.'                
+            }
+        }
+        stage('Build Infra App') {
+            steps {
+                sh 'terraform init'
+                sh 'terraform plan'
+                sh 'terraform apply'
+                echo 'App infra built'             
+            }
+        }
+    }
+}
