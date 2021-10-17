@@ -1,0 +1,4 @@
+# Here are variables related to the Tomcat installation
+
+http_port: 8080
+username: jenkins

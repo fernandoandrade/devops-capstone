@@ -1,8 +1,0 @@
--------------------------------------------------------------------------------
-Test set: TestSuite
--------------------------------------------------------------------------------
-Tests run: 4, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 10.701 s <<< FAILURE! - in TestSuite
-testCalcMultiplication(com.bsafe.AutoCalcAppTest)  Time elapsed: 1.455 s  <<< FAILURE!
-java.lang.AssertionError: expected [true] but found [false]
-	at com.bsafe.AutoCalcAppTest.testCalcMultiplication(AutoCalcAppTest.java:39)
-

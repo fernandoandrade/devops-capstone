@@ -1,0 +1,24 @@
+---
+- name: Update repository
+  command: apt update
+
+- name: Install Java
+  yum: name=openjdk-11-jdk state=present
+
+- name: Install Tomcat
+  apt: name=tomcat9 force=yes state=present
+
+- name: wait for tomcat to start
+  wait_for: port={{http_port}}
+
+- name: Copy War
+  copy: src=./target/xyz-0.0.1-SNAPSHOT.war dest=/var/lib/tomcat9/webapps/xyz.war force=yes mode=0777
+
+  notify: restart tomcat
+
+- name: Restart Tomcat 9
+  command: systemctl restart tomcat9
+  ignore_errors: yes
+
+- name: wait for tomcat to start
+  wait_for: port={{http_port}}
