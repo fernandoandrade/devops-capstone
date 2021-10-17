@@ -6,7 +6,7 @@ pipeline {
     stages {
         stage('Compile and Run UniTest') {
             steps {
-                mvn clean compile test "-Dtest=!AutoCalcAppTest*"
+                sh 'mvn clean compile test "-Dtest=!AutoCalcAppTest*"'
                 echo 'Code Compiled and Tested.'                
             }
         }
