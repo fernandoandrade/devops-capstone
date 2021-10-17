@@ -37,8 +37,7 @@ pipeline {
         }
         stage('Push container') {
             steps{
-                withCredentials([string(credentialsId: 'dockerhub', variable: 'dockerhubcred')]) {
-                  sh 'docker login -u nandocandrade80 -p ${dockerhubcred}'
+                withDockerRegistry([ credentialsId: "dockerHub", url: "" ]) {
                   sh 'docker push nandocandrade80/${JOB_NAME}:v1.${BUILD_NUMBER}'
                   sh 'docker push nandocandrade80/${JOB_NAME}:latest'
                   sh 'docker rmi ${JOB_NAME}:v1.${BUILD_NUMBER} nandocandrade80/${JOB_NAME}:v1.${BUILD_NUMBER} nandocandrade80/${JOB_NAME}:latest'
