@@ -27,5 +27,30 @@ pipeline {
                 echo 'Automated Tests completed'
             }
         }
+        stage('Docker build and Tag') {
+            steps {
+                sh 'docker build -t ${JOB_NAME}:v1.${BUILD_NUMBER} .'
+                sh 'docker tag ${JOB_NAME}:v1.${BUILD_NUMBER} nandocandrade80/${JOB_NAME}:v1.${BUILD_NUMBER} '
+                sh 'docker tag ${JOB_NAME}:v1.${BUILD_NUMBER} nandocandrade80/${JOB_NAME}:latest '
+                echo 'Built and Taged completed'
+            }
+        }
+        stage('Push container') {
+            steps{
+                withCredentials([string(credentialsId: 'dockerhub', variable: 'dockerhubcred')]) {
+                  sh 'docker login -u nandocandrade80 -p ${dockerhubcred}'
+                  sh 'docker push nandocandrade80/${JOB_NAME}:v1.${BUILD_NUMBER}'
+                  sh 'docker push nandocandrade80/${JOB_NAME}:latest'
+                  sh 'docker rmi ${JOB_NAME}:v1.${BUILD_NUMBER} nandocandrade80/${JOB_NAME}:v1.${BUILD_NUMBER} nandocandrade80/${JOB_NAME}:latest'
+                }
+                echo 'Container pushed'
+            }
+        }
+        stage('Docker Deploy') {
+            steps{
+                sh "ansible-playbook main.yml -i inventories/dev/hosts --user jenkins --key-file ~/.ssh/bsafe.pem"
+                echo 'Deploy completed'
+            }
+        }
     }
 }
