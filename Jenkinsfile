@@ -1,11 +1,6 @@
 pipeline {
     agent any
     stages {
-        stage('Checkout Repo') {
-            steps {
-                git branch: 'master', url: 'https://github.com/fernandoandrade/devops-capstone.git'
-            }
-        }
         stage('Compile and Run UniTest') {
             steps {
                 sh 'mvn clean compile test "-Dtest=!AutoCalcAppTest*"'
