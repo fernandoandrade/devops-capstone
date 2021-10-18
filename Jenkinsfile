@@ -20,7 +20,7 @@ pipeline {
                 sh "docker rmi bsafe-test"
                 sh "docker build -t bsafe-test ."
                 sh "docker run -d --name bsafe-container -p 8082:8080 bsafe-test"
-                sh "mvn '-DtestHost=localhost:8082' '-Dwebdriver.chrome.driver=C:\\Users\\fcata\\OneDrive\\Documentos\\devops\\devops-capstone\\drivers\\chromedriver.exe' test "
+                sh "mvn '-DtestHost=localhost:8082' '-Dwebdriver.chrome.driver=/var/lib/jenkins/workspace/bsafe-app-server/drivers/chromedriver' test"
                 echo "Automated Tests completed"
             }
         }
