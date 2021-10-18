@@ -100,6 +100,6 @@ resource "null_resource" "app-server-conf" {
   }
 
   provisioner "local-exec" {
-    command = "mkdir -p ~/.ssh/ && echo '${tls_private_key.private-key.private_key_pem}' > ~/.ssh/bsf-app.pem && chmod 600 ~/.ssh/bsf-app.pem && echo '[webservers]' > ~/hosts && echo '${aws_instance.app-server.*.public_dns[0]}' >> ~/hosts "
+    command = "mkdir -p ~/.ssh/ && echo '${tls_private_key.private-key.private_key_pem}' > ~/.ssh/bsf-app.pem && chmod 600 ~/.ssh/bsf-app.pem && echo '[webservers]' > ~/hosts && chmod 600 ~/hosts && echo '${aws_instance.app-server.*.public_dns[0]}' >> ~/hosts "
   }
 }
