@@ -1,8 +1,5 @@
 pipeline {
     agent any
-    tools {
-        maven 'mvn'
-    }
     stages {
         stage('Compile and Run UniTest') {
             steps {
