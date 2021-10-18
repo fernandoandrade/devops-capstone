@@ -3,7 +3,8 @@ package com.bsafe;
 import org.openqa.selenium.By;		
 import org.openqa.selenium.WebDriver;		
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.chrome.ChromeDriver;	
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.WebElement;	
 import org.testng.Assert;		
 import org.testng.annotations.Test;	
@@ -46,7 +47,13 @@ public class AutoCalcAppTest {
 			
 			String pathFirefox = System.getProperty("webdriver.firefox.driver");
 			
-		    driver = (pathFirefox != null && !"".equalsIgnoreCase(pathFirefox))? new FirefoxDriver(): new ChromeDriver();
+		    if (pathFirefox != null && !"".equalsIgnoreCase(pathFirefox)) {
+			driver = new FirefoxDriver();
+		    } else {
+			ChromeOptions options = new ChromeOptions();
+			options.addArguments("--headless", "--disable-gpu", "--window-size=1920,1200","--ignore-certificate-errors","--disable-extensions","--no-sandbox","--disable-dev-shm-usage");
+			driver = new ChromeDriver(options);
+		    }
 		}		
 		@AfterTest
 		public void afterTest() {
