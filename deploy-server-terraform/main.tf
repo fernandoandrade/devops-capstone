@@ -90,7 +90,7 @@ resource "aws_instance" "infra-server" {
       "sudo add-apt-repository --yes --update ppa:ansible/ansible ",
       "sudo apt install ansible -y ",
       "echo '[webservers]' > ~/hosts",
-      "echo '${this.*.public_dns}' >> ~/hosts",
+      "echo '${self.public_dns}' >> ~/hosts",
       "echo '${tls_private_key.private-key.private_key_pem}' > ~/.ssh/bsafe.pem && chmod 600 ~/.ssh/bsafe.pem",
       "sudo sed -i '71s/.*/host_key_checking = False/' /etc/ansible/ansible.cfg",
       "echo Install Java",
