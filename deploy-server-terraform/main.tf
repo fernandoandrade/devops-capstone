@@ -109,6 +109,6 @@ resource "null_resource" "infra-server-conf" {
   }
 
   provisioner "local-exec" {
-    command = "echo '${tls_private_key.private-key.private_key_pem}' > ~/.ssh/bsf-infra.pem && chmod 600 ~/.ssh/bsf-infra.pem "
+    command = "mkdir -p ~/.ssh && echo '${tls_private_key.private-key.private_key_pem}' > ~/.ssh/bsf-infra.pem && chmod 600 ~/.ssh/bsf-infra.pem "
   }
 }
