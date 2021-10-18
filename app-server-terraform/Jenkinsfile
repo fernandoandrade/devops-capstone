@@ -9,7 +9,7 @@ pipeline {
         }
         stage('Build Infra App') {
             steps {
-                sh 'cd app-server-terraform && sudo -S terraform init && sudo -S terraform plan -lock=false && sudo -S terraform apply -auto-approve -lock=false '
+                sh 'cd app-server-terraform && terraform init && terraform plan -lock=false && terraform apply -auto-approve -lock=false '
                 echo 'App infra built'             
             }
         }
