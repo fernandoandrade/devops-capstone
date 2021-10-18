@@ -90,18 +90,15 @@ resource "null_resource" "app-server-conf" {
 
   provisioner "remote-exec" {
     inline = [
-	"echo Install Docker",
-        "sudo apt-get update",
-        "sudo apt-get remove docker docker-engine docker.io",
-        "sudo apt install docker.io",
-        "sudo systemctl start docker",
-        "sudo systemctl enable docker",
-	"echo '[webservers]' > ~/hosts",
-        "echo '${aws_instance.app-server.*.public_dns[0]}' >> ~/hosts"
+      "echo Install Docker",
+      "sudo apt-get update",
+      "sudo apt install docker.io",
+      "sudo systemctl start docker",
+      "sudo systemctl enable docker"
     ]
   }
 
   provisioner "local-exec" {
-    command = "echo '${tls_private_key.private-key.private_key_pem}' > ~/.ssh/bsf-app.pem && chmod 600 ~/.ssh/bsf-app.pem "
+    command = "echo '${tls_private_key.private-key.private_key_pem}' > ~/.ssh/bsf-app.pem && chmod 600 ~/.ssh/bsf-app.pem && echo '[webservers]' > ~/hosts && echo '${aws_instance.infra-server.*.public_dns[0]}' >> ~/hosts "
   }
 }
