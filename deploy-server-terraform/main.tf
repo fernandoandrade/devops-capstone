@@ -100,27 +100,7 @@ resource "null_resource" "infra-server-conf" {
       "sudo apt install -y software-properties-common ",
       "sudo add-apt-repository --yes --update ppa:ansible/ansible ",
       "sudo apt install ansible -y ",
-      "echo Install Java",
-      "sudo apt install -y openjdk-11-jdk ",
-      "sudo apt-get install -y git",
-      "echo Install Maven",
-      "sudo apt-get install -y maven",
-      "echo Install Docker",
-      "sudo apt install docker.io",
-      "sudo systemctl start docker",
-      "sudo systemctl enable docker",
-      "echo Install Jenkins",
-      "sudo wget -q -O - https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo apt-key add -",
-      "sudo sh -c 'echo deb https://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'",
-      "sudo apt update",
-      "sudo apt install -y jenkins",
-      "sudo systemctl start jenkins",
-      "echo 'Java_Home:'",
-      "readlink -f $(which java)",
-      "echo 'Mvn_Home:'",
-      "mvn -v",
-      "echo 'Jenkins Initial Admin password:'",
-      "sudo cat /var/lib/jenkins/secrets/initialAdminPassword"
+      "echo Install Java"
     ]
   }
 
