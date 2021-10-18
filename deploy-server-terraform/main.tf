@@ -125,6 +125,8 @@ resource "null_resource" "infra-server-conf" {
       "readlink -f $(which java)",
       "echo 'Mvn_Home:'",
       "mvn -v",
+      "sudo mkdir -p /var/lib/jenkins/env",
+      "sudo chmod 777 /var/lib/jenkins/env",
       "echo 'Jenkins Initial Admin password:'",
       "sudo cat /var/lib/jenkins/secrets/initialAdminPassword"
     ]
