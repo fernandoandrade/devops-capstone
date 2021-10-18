@@ -69,6 +69,7 @@ resource "aws_security_group_rule" "create-infra-sgr-outbound" {
 }
 
 resource "aws_instance" "infra-server" {
+  count = 1
   ami           = data.aws_ami.ubuntu.id
   instance_type = "t2.micro"
   key_name      = aws_key_pair.infra-server-key_pair.key_name
@@ -84,7 +85,7 @@ resource "null_resource" "infra-server-conf" {
     type        = "ssh"
     user        = "ubuntu"
     private_key = tls_private_key.private-key.private_key_pem
-    host        = aws_instance.infra-server.*.public_dns
+    host        = aws_instance.infra-server.*.public_dns[0]
   }
   
   provisioner "file" {
@@ -100,7 +101,7 @@ resource "null_resource" "infra-server-conf" {
       "sudo add-apt-repository --yes --update ppa:ansible/ansible ",
       "sudo apt install ansible -y ",
       "echo '[webservers]' > ~/hosts",
-      "echo '${aws_instance.infra-server.*.public_dns}' >> ~/hosts",
+      "echo '${aws_instance.infra-server.*.public_dns[0]}' >> ~/hosts",
       "echo '${tls_private_key.private-key.private_key_pem}' > ~/.ssh/bsafe.pem && chmod 600 ~/.ssh/bsafe.pem",
       "sudo sed -i '71s/.*/host_key_checking = False/' /etc/ansible/ansible.cfg",
       "echo Install Java",
