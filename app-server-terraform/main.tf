@@ -92,7 +92,7 @@ resource "null_resource" "app-server-conf" {
     inline = [
       "echo Install Docker",
       "sudo apt-get update",
-      "sudo apt install docker.io",
+      "sudo apt install -y docker.io",
       "sudo systemctl start docker",
       "sudo systemctl enable docker"
     ]
