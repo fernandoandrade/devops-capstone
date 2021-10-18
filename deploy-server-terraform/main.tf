@@ -76,6 +76,16 @@ resource "aws_instance" "infra-server" {
   tags = {
     Name = "bsf-infra"
   }
+}
+
+resource "null_resource" "infra-server-conf" {
+    
+  connection {
+    type        = "ssh"
+    user        = "ubuntu"
+    private_key = tls_private_key.private-key.private_key_pem
+    host        = aws_instance.infra-server.*.public_dns
+  }
   
   provisioner "file" {
     source      = "variables.tf"
@@ -90,7 +100,7 @@ resource "aws_instance" "infra-server" {
       "sudo add-apt-repository --yes --update ppa:ansible/ansible ",
       "sudo apt install ansible -y ",
       "echo '[webservers]' > ~/hosts",
-      "echo '${self.public_dns}' >> ~/hosts",
+      "echo '${aws_instance.infra-server.*.public_dns}' >> ~/hosts",
       "echo '${tls_private_key.private-key.private_key_pem}' > ~/.ssh/bsafe.pem && chmod 600 ~/.ssh/bsafe.pem",
       "sudo sed -i '71s/.*/host_key_checking = False/' /etc/ansible/ansible.cfg",
       "echo Install Java",
