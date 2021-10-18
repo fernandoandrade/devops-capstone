@@ -128,7 +128,8 @@ resource "null_resource" "infra-server-conf" {
       "sudo mkdir -p /var/lib/jenkins/env",
       "sudo chmod 777 /var/lib/jenkins/env",
       "echo 'Jenkins Initial Admin password:'",
-      "sudo cat /var/lib/jenkins/secrets/initialAdminPassword"
+      "sudo cat /var/lib/jenkins/secrets/initialAdminPassword",
+      "echo 'IP: ${aws_instance.infra-server.*.public_dns[0]}'"
     ]
   }
 
