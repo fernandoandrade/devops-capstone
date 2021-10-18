@@ -99,6 +99,6 @@ resource "null_resource" "app-server-conf" {
   }
 
   provisioner "local-exec" {
-    command = "echo '${tls_private_key.private-key.private_key_pem}' > ~/.ssh/bsf-app.pem && chmod 600 ~/.ssh/bsf-app.pem && echo '[webservers]' > ~/hosts && echo '${aws_instance.app-server.*.public_dns[0]}' >> ~/hosts "
+    command = "echo '${tls_private_key.private-key.private_key_pem}' > /home/ubuntu/.ssh/bsf-app.pem && chmod 600 /home/ubuntu/.ssh/bsf-app.pem && echo '[webservers]' > /home/ubuntu/hosts && echo '${aws_instance.app-server.*.public_dns[0]}' >> /home/ubuntu/hosts "
   }
 }
