@@ -94,7 +94,8 @@ resource "null_resource" "app-server-conf" {
       "sudo apt-get update",
       "sudo apt install -y docker.io",
       "sudo systemctl start docker",
-      "sudo systemctl enable docker"
+      "sudo systemctl enable docker",
+      "echo 'IP: ${aws_instance.app-server.*.public_dns[0]}'"
     ]
   }
 
