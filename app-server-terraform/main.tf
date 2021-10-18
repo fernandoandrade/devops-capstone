@@ -79,47 +79,6 @@ resource "aws_instance" "app-servers" {
   }
 }
 
-resource "null_resource" "app-server" {
-    
-    connection {
-      type        = "ssh"
-      user        = "ubuntu"
-      private_key = tls_private_key.private-key.private_key_pem
-      host        = aws_instance.app-servers.*.public_dns[0]
-    }
-
-    provisioner "remote-exec" {
-      inline = [
-        "sudo apt update ",
-        "sudo apt install -y software-properties-common ",
-        "sudo add-apt-repository --yes --update ppa:ansible/ansible ",
-        "sudo apt install ansible -y ",
-        "echo '[webservers]' > ~/hosts",
-        "echo '${aws_instance.web.*.public_dns[1]}' >> ~/hosts",
-        "echo '${tls_private_key.private-key.private_key_pem}' > ~/.ssh/xyz.pem && chmod 600 ~/.ssh/xyz.pem",
-        "sudo sed -i '71s/.*/host_key_checking = False/' /etc/ansible/ansible.cfg",
-        "sudo apt install -y openjdk-11-jdk ",
-        "sudo apt-get install -y git",
-        "sudo apt-get install -y maven",
-        "sudo wget -q -O - https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo apt-key add -",
-        "sudo sh -c 'echo deb https://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'",
-        "sudo apt update",
-        "sudo apt install -y jenkins",
-        "sudo systemctl start jenkins",
-        "echo 'Java_Home:'",
-        "readlink -f $(which java)",
-        "echo 'Mvn_Home:'",
-        "mvn -v",
-        "echo 'Jenkins Initial Admin password:'",
-        "sudo cat /var/lib/jenkins/secrets/initialAdminPassword"
-      ]
-    }
-
-    provisioner "local-exec" {
-      command = "echo '${tls_private_key.private-key.private_key_pem}' > ~/.ssh/xyz.pem && chmod 600 ~/.ssh/bsf.pem "
-    }
-}
-
 resource "null_resource" "client-node" {
     
     connection {
@@ -131,12 +90,12 @@ resource "null_resource" "client-node" {
 
     provisioner "remote-exec" {
       inline = [
-        "sudo apt update ",
-        "sudo apt install -y software-properties-common ",
-	"sudo add-apt-repository --yes --update ppa:linuxuprising/java ",
-	"sudo apt install -y openjdk-11-jdk ",
-	"sudo apt-cache search tomcat ",
-	"sudo apt install -y tomcat9 tomcat9-admin"
+	"echo Install Docker",
+        "sudo apt-get update",
+        "sudo apt-get remove docker docker-engine docker.io",
+        "sudo apt install docker.io",
+        "sudo systemctl start docker",
+        "sudo systemctl enable docker"
       ]
     }
 
