@@ -89,7 +89,7 @@ resource "null_resource" "infra-server-conf" {
   
   provisioner "file" {
     source      = "variables.tf"
-    destination = "./variables.tf"
+    destination = "/tmp/variables.tf"
   }
   
   provisioner "remote-exec" {
