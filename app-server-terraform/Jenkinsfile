@@ -9,7 +9,7 @@ pipeline {
         }
         stage('Build Infra App') {
             steps {
-                sh 'cd app-server-terraform && sudo terraform init && sudo terraform plan && sudo terraform apply -auto-approve '
+                sh 'cd app-server-terraform && terraform init && terraform plan && terraform apply -auto-approve '
                 echo 'App infra built'             
             }
         }
