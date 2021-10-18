@@ -3,15 +3,13 @@ pipeline {
     stages {
         stage('Set AWS Credentials') {
             steps {
-                sh 'cd ./app-server-terraform'
-                sh 'export access_key=${env.access_key}'
-                sh 'export secret_key=${env.secret_key}'
-                sh 'export session_token=${env.session_token}'
+                sh 'cp ~/variables.tf ./app-server-terraform/'
                 echo 'AWS credentials set.'                
             }
         }
         stage('Build Infra App') {
             steps {
+                sh 'cd app-server-terraform'
                 sh 'terraform init'
                 sh 'terraform plan'
                 sh 'terraform apply'
