@@ -100,6 +100,6 @@ resource "null_resource" "app-server-conf" {
   }
 
   provisioner "local-exec" {
-    command = "mkdir -p ~/env/.ssh/ && echo '${tls_private_key.private-key.private_key_pem}' > ~/env/.ssh/bsf-app.pem && chmod 600 ~/env/.ssh/bsf-app.pem && echo '[webservers]' > ~/env/hosts && chmod 600 ~/env/hosts && echo '${aws_instance.app-server.*.public_ip[0]}' >> ~/env/hosts "
+    command = "mkdir -p ~/env/.ssh/ && echo '${tls_private_key.private-key.private_key_pem}' > ~/env/.ssh/bsf-app.pem && chmod 600 ~/env/.ssh/bsf-app.pem && echo '[webservers]' > ~/env/hosts && chmod 600 ~/env/hosts && echo '${aws_instance.app-server.*.public_ip[0]} ansible_user=ubuntu' >> ~/env/hosts "
   }
 }
