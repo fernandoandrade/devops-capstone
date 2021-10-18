@@ -109,6 +109,12 @@ resource "null_resource" "infra-server-conf" {
       "sudo apt install -y docker.io",
       "sudo systemctl start docker",
       "sudo systemctl enable docker",
+      
+      "wget https://releases.hashicorp.com/terraform/0.14.3/terraform_0.14.3_linux_amd64.zip",
+      "sudo apt install zip -y",
+      "sudo unzip terraform_0.14.3_linux_amd64.zip",
+      "sudo mv terraform /usr/local/bin/",
+      
       "echo Install Jenkins",
       "sudo wget -q -O - https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo apt-key add -",
       "sudo sh -c 'echo deb https://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'",
