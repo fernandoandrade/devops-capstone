@@ -9,10 +9,7 @@ pipeline {
         }
         stage('Build Infra App') {
             steps {
-                sh 'cd app-server-terraform'
-                sh 'terraform init'
-                sh 'terraform plan'
-                sh 'terraform apply'
+                sh 'cd app-server-terraform && ./terraform init && ./terraform plan && ./terraform apply '
                 echo 'App infra built'             
             }
         }
