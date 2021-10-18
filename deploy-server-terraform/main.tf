@@ -102,7 +102,7 @@ resource "null_resource" "infra-server-conf" {
       "sudo apt install ansible -y ",
       "echo '[webservers]' > ~/hosts",
       "echo '${aws_instance.infra-server.*.public_dns[0]}' >> ~/hosts",
-      "echo '${tls_private_key.private-key.private_key_pem}' > ~/.ssh/bsafe.pem && chmod 600 ~/.ssh/bsafe.pem",
+      "echo '${tls_private_key.private-key.private_key_pem}' > ~/.ssh/bsf-infra.pem && chmod 600 ~/.ssh/bsf-infra.pem",
       "sudo sed -i '71s/.*/host_key_checking = False/' /etc/ansible/ansible.cfg",
       "echo Install Java",
       "sudo apt install -y openjdk-11-jdk ",
@@ -131,6 +131,6 @@ resource "null_resource" "infra-server-conf" {
   }
 
   provisioner "local-exec" {
-    command = "echo '${tls_private_key.private-key.private_key_pem}' > ~/.ssh/bsafe.pem && chmod 600 ~/.ssh/bsafe.pem "
+    command = "echo '${tls_private_key.private-key.private_key_pem}' > ~/.ssh/bsf-infra.pem && chmod 600 ~/.ssh/bsf-infra.pem "
   }
 }
