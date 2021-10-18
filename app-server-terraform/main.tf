@@ -1,8 +1,8 @@
 provider "aws" {
   region                  = "us-east-1"
-  access_key              = "${var.access_key}"
-  secret_key              = "${var.secret_key}"
-  token                   = "${var.session_token}"
+  access_key              = var.access_key
+  secret_key              = var.secret_key
+  token                   = var.session_token
 }
 
 resource "tls_private_key" "private-key" {
@@ -68,35 +68,40 @@ resource "aws_security_group_rule" "create-app-sgr-outbound" {
   type              = "egress"
 }
 
-resource "aws_instance" "app-servers" {
-  count         = 2
+resource "aws_instance" "app-server" {
+  count         = 1
   ami           = data.aws_ami.ubuntu.id
   instance_type = "t2.micro"
   key_name      = aws_key_pair.app-server-key_pair.key_name
   security_groups = ["BSF-APP-SG"]
   tags = {
-    Name = "bsf-app-${count.index}"
+    Name = "bsf-app"
   }
 }
 
-resource "null_resource" "client-node" {
+resource "null_resource" "app-server-conf" {
     
-    connection {
-      type        = "ssh"
-      user        = "ubuntu"
-      private_key = tls_private_key.private-key.private_key_pem
-      host        = aws_instance.web.*.public_dns[1]
-    }
+  connection {
+    type        = "ssh"
+    user        = "ubuntu"
+    private_key = tls_private_key.private-key.private_key_pem
+    host        = aws_instance.app-server.*.public_dns[0]
+  }
 
-    provisioner "remote-exec" {
-      inline = [
+  provisioner "remote-exec" {
+    inline = [
 	"echo Install Docker",
         "sudo apt-get update",
         "sudo apt-get remove docker docker-engine docker.io",
         "sudo apt install docker.io",
         "sudo systemctl start docker",
-        "sudo systemctl enable docker"
-      ]
-    }
+        "sudo systemctl enable docker",
+	"echo '[webservers]' > ~/hosts",
+        "echo '${aws_instance.app-server.*.public_dns[0]}' >> ~/hosts"
+    ]
+  }
 
+  provisioner "local-exec" {
+    command = "echo '${tls_private_key.private-key.private_key_pem}' > ~/.ssh/bsf-app.pem && chmod 600 ~/.ssh/bsf-app.pem "
+  }
 }
