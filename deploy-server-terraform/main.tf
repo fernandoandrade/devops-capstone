@@ -100,11 +100,27 @@ resource "null_resource" "infra-server-conf" {
       "sudo apt install -y software-properties-common ",
       "sudo add-apt-repository --yes --update ppa:ansible/ansible ",
       "sudo apt install ansible -y ",
-      "echo '[webservers]' > ~/hosts",
-      "echo '${aws_instance.infra-server.*.public_dns[0]}' >> ~/hosts",
-      "echo '${tls_private_key.private-key.private_key_pem}' > ~/.ssh/bsf-infra.pem && chmod 600 ~/.ssh/bsf-infra.pem",
-      "sudo sed -i '71s/.*/host_key_checking = False/' /etc/ansible/ansible.cfg",
-      "echo Install Java"
+      "echo Install Java",
+      "sudo apt install -y openjdk-11-jdk ",
+      "sudo apt-get install -y git",
+      "echo Install Maven",
+      "sudo apt-get install -y maven",
+      "echo Install Docker",
+      "sudo apt install docker.io",
+      "sudo systemctl start docker",
+      "sudo systemctl enable docker",
+      "echo Install Jenkins",
+      "sudo wget -q -O - https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo apt-key add -",
+      "sudo sh -c 'echo deb https://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'",
+      "sudo apt update",
+      "sudo apt install -y jenkins",
+      "sudo systemctl start jenkins",
+      "echo 'Java_Home:'",
+      "readlink -f $(which java)",
+      "echo 'Mvn_Home:'",
+      "mvn -v",
+      "echo 'Jenkins Initial Admin password:'",
+      "sudo cat /var/lib/jenkins/secrets/initialAdminPassword"
     ]
   }
 
