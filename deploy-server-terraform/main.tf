@@ -77,6 +77,10 @@ resource "aws_instance" "infra-server" {
   tags = {
     Name = "bsf-infra"
   }
+  ebs_block_device {
+    device_name = "/dev/sda1"
+    volume_size = 20
+  }
 }
 
 resource "null_resource" "infra-server-conf" {
