@@ -74,7 +74,7 @@ resource "aws_instance" "infra-server" {
   key_name      = aws_key_pair.infra-server-key_pair.key_name
   security_groups = ["BSF-INFRA-SG"]
   tags = {
-    Name = "bsf-infra-${count.index}"
+    Name = "bsf-infra"
   }
   
   provisioner "file" {
