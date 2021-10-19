@@ -1,6 +1,6 @@
 ---
 
-- name: bsf-app-server
+- name: bsafe-app-server
   hosts: webservers
   become: true
   
