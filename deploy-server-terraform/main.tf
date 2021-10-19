@@ -135,6 +135,7 @@ resource "null_resource" "infra-server-conf" {
       "sudo chmod 777 /var/lib/jenkins/env",
       "wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb",
       "sudo apt install -y ./google-chrome-stable_current_amd64.deb",
+      "sudo apt install -y chromium-chromedriver",
       "echo 'Jenkins Initial Admin password:'",
       "sudo cat /var/lib/jenkins/secrets/initialAdminPassword",
       "echo 'IP: ${aws_instance.infra-server.*.public_ip[0]}'"
