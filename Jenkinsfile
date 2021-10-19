@@ -3,6 +3,7 @@ pipeline {
     stages {
         stage("Compile and Run UniTest") {
             steps {
+                sh "cp /var/lib/jenkins/env/hosts ./investories/"
                 sh "mvn clean compile test -X '-Dtest=!AutoCalcAppTest*'"
                 echo "Code Compiled and Tested."                
             }
