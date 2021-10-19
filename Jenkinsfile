@@ -25,6 +25,13 @@ pipeline {
                 echo "Automated Tests completed"
             }
         }
+        stage("Git Tag") {
+            steps {
+                sh "git tag -a v1.${BUILD_NUMBER} -m 'New release for v1.${BUILD_NUMBER}'"
+                sh "git push --tags "
+                echo "Git Taged completed"
+            }
+        }
         stage("Docker build and Tag") {
             steps {
                 sh "docker build -t ${JOB_NAME}:v1.${BUILD_NUMBER} ."
