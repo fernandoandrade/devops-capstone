@@ -109,7 +109,9 @@ resource "null_resource" "infra-server-conf" {
       "sudo apt-get install -y git",
       "echo Install Maven",
       "sudo apt-get install -y maven",
+      
       "echo Install Docker",
+      "sudo apt-get remove docker docker-engine docker.io containerd runc",
       "sudo apt install -y docker.io",
       "sudo systemctl start docker",
       "sudo systemctl enable docker",
