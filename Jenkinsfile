@@ -3,7 +3,6 @@ pipeline {
     stages {
         stage("Compile and Run UniTest") {
             steps {
-                sh "cp ~/env/hosts ./inventories/"
                 sh "mvn clean compile test -X '-Dtest=!AutoCalcAppTest*'"
                 echo "Code Compiled and Tested."                
             }
@@ -47,6 +46,7 @@ pipeline {
         }
         stage("Docker Deploy") {
             steps{
+                sh "cp ~/env/hosts ./inventories/"
                 sh "ansible-playbook main.yml -i inventories/hosts --user jenkins --key-file ~/.ssh/bsafe.pem"
                 echo "Deploy completed"
             }
