@@ -71,7 +71,7 @@ resource "aws_security_group_rule" "create-infra-sgr-outbound" {
 resource "aws_instance" "infra-server" {
   count = 1
   ami           = data.aws_ami.ubuntu.id
-  instance_type = "t3.small"
+  instance_type = "t3.micro"
   key_name      = aws_key_pair.infra-server-key_pair.key_name
   security_groups = ["BSF-INFRA-SG"]
   tags = {
