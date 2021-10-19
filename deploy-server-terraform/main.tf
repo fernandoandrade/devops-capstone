@@ -134,8 +134,8 @@ resource "null_resource" "infra-server-conf" {
       "readlink -f $(which java)",
       "echo 'Mvn_Home:'",
       "mvn -v",
-      "sudo mkdir -p /var/lib/jenkins/env",
-      "sudo chmod 777 /var/lib/jenkins/env",
+      "sudo mkdir -p /local/bsafe/",
+      "sudo chmod 777 /local/bsafe/",
       "wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb",
       "sudo apt install -y ./google-chrome-stable_current_amd64.deb",
       "sudo apt install -y chromium-chromedriver",
@@ -146,6 +146,6 @@ resource "null_resource" "infra-server-conf" {
   }
 
   provisioner "local-exec" {
-    command = "mkdir -p ~/.ssh && echo '${tls_private_key.private-key.private_key_pem}' > ~/.ssh/bsf-infra.pem && chmod 600 ~/.ssh/bsf-infra.pem "
+    command = "mkdir -p /local/bsafe/.ssh && echo '${tls_private_key.private-key.private_key_pem}' > /local/bsafe/.ssh/bsf-infra.pem && chmod 600 /local/bsafe/.ssh/bsf-infra.pem "
   }
 }
