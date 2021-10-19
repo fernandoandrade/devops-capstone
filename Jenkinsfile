@@ -46,8 +46,8 @@ pipeline {
         }
         stage("Docker Deploy") {
             steps{
-                sh "cp ~/env/hosts ./inventories/"
-                sh "ansible-playbook main.yml -i inventories/hosts --user jenkins --key-file ~/env/.ssh/bsf-app.pem"
+                sh "cp /local/bsafe/hosts ./inventories/"
+                sh "ansible-playbook main.yml -i inventories/hosts --user jenkins --key-file /local/bsafe/.ssh/bsf-app.pem"
                 echo "Deploy completed"
             }
         }
