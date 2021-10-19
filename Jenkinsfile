@@ -21,7 +21,7 @@ pipeline {
                 sh "docker rmi bsafe-test || true"
                 sh "docker build -t bsafe-test ."
                 sh "docker run -d --name bsafe-container -p 8082:8080 bsafe-test"
-                sh "chmod 777 -R drivers/"
+                sh "chmod 777 -R ./drivers/"
                 sh "mvn '-DtestHost=localhost:8082' '-Dwebdriver.chrome.driver=/var/lib/jenkins/workspace/bsafe-app-server/drivers/chromedriver' test"
                 echo "Automated Tests completed"
             }
