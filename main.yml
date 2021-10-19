@@ -6,15 +6,15 @@
   
   tasks:
      - name: stop tomcat docker
-       shell: docker stop tomcat-container | true
+       shell: docker stop bsafe-container | true
        
      - name: remove tomcat container
-       shell: docker rm -f tomcat-container | true
+       shell: docker rm -f bsafe-container | true
        
      - name: Remove tomcat image
-       shell: docker rmi -f nandocandrade80/tomcat-image | true
+       shell: docker rmi -f nandocandrade80/bsafe-app-server | true
        
      - name: create a new tomcat container using the defined Dockerfile
-       shell: docker run -d --name tomcat-container -p 8080:8080 nandocandrade80/bsafe-app-server
+       shell: docker run -d --name bsafe-container -p 8080:8080 nandocandrade80/bsafe-app-server
       
 ...
