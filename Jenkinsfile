@@ -29,7 +29,7 @@ pipeline {
             steps {
                 sh "git tag -a v1.${BUILD_NUMBER} -m 'New release for v1.${BUILD_NUMBER}'"
                 sh "git push --tags "
-                echo "Git Taged completed"
+                echo "Git Tagged completed"
             }
         }
         stage("Docker build and Tag") {
@@ -37,7 +37,7 @@ pipeline {
                 sh "docker build -t ${JOB_NAME}:v1.${BUILD_NUMBER} ."
                 sh "docker tag ${JOB_NAME}:v1.${BUILD_NUMBER} nandocandrade80/${JOB_NAME}:v1.${BUILD_NUMBER} "
                 sh "docker tag ${JOB_NAME}:v1.${BUILD_NUMBER} nandocandrade80/${JOB_NAME}:latest "
-                echo "Built and Taged completed"
+                echo "Built and Tagged completed"
             }
         }
         stage("Push container") {
