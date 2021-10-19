@@ -36,17 +36,18 @@ pipeline {
         }
         stage("Push container") {
             steps{
-                withDockerRegistry([ credentialsId: "dockerHub", url: "" ]) {
-                  sh "docker push nandocandrade80/${JOB_NAME}:v1.${BUILD_NUMBER}"
-                  sh "docker push nandocandrade80/${JOB_NAME}:latest"
-                  sh "docker rmi ${JOB_NAME}:v1.${BUILD_NUMBER} nandocandrade80/${JOB_NAME}:v1.${BUILD_NUMBER} nandocandrade80/${JOB_NAME}:latest"
+                withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                  sh "docker login -u=${USERNAME} -p=${PASSWORD} "
+                  sh "docker push ${USERNAME}/${JOB_NAME}:v1.${BUILD_NUMBER}"
+                  sh "docker push ${USERNAME}/${JOB_NAME}:latest"
+                  sh "docker rmi ${JOB_NAME}:v1.${BUILD_NUMBER} ${USERNAME}/${JOB_NAME}:v1.${BUILD_NUMBER} ${USERNAME}/${JOB_NAME}:latest"
                 }
                 echo "Container pushed"
             }
         }
         stage("Docker Deploy") {
             steps{
-                sh "ansible-playbook main.yml -i inventories/dev/hosts --user jenkins --key-file ~/.ssh/bsafe.pem"
+                sh "ansible-playbook main.yml -i inventories/hosts --user jenkins --key-file ~/.ssh/bsafe.pem"
                 echo "Deploy completed"
             }
         }
