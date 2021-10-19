@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Set AWS Credentials') {
             steps {
-                sh 'cp /local/bsafe/variables.tf ./app-server-terraform/'
+                sh 'cp /home/ubuntu/variables.tf ./app-server-terraform/'
                 echo 'AWS credentials set.'                
             }
         }
